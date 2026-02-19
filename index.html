@@ -1,0 +1,1128 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="description" content="Портфолио разработчика: кейсы, категории, результаты, стек, контакты." />
+  <meta name="theme-color" content="#0b0f19" />
+  <meta property="og:title" content="Портфолио разработчика" />
+  <meta property="og:description" content="Кейсы, результаты, стек, контакты." />
+  <meta property="og:type" content="website" />
+  <title>hush!k dev</title>
+
+  <style>
+    :root{
+      --bg:#0b0f19;
+      --panel:#10182a;
+      --panel2:#0f1627;
+      --text:#eaf0ff;
+      --muted:#a8b3d6;
+      --line:rgba(255,255,255,.10);
+      --accent:#7c5cff;
+      --accent2:#2dd4bf;
+
+      --radius:15px;
+      --shadow: 0 20px 60px rgba(0,0,0,.35);
+      --shadow2: 0 10px 30px rgba(0,0,0,.25);
+
+      --max: 1120px;
+      --font: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Inter, Arial, "Noto Sans", "Apple Color Emoji","Segoe UI Emoji";
+    }
+
+    /* Light theme */
+    [data-theme="light"]{
+      --bg:#f6f7fb;
+      --panel:#ffffff;
+      --panel2:#ffffff;
+      --text:#0b1222;
+      --muted:#4a587a;
+      --line:rgba(0,0,0,.10);
+      --shadow: 0 20px 60px rgba(0,0,0,.10);
+      --shadow2: 0 10px 30px rgba(0,0,0,.08);
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%}
+
+    body{
+      margin:0;
+      font-family:var(--font);
+      color:var(--text);
+      line-height:1.5;
+      letter-spacing:.2px;
+      background: var(--bg);
+      position: relative;
+      overflow-x:hidden;
+    }
+
+    /* ---- ФОН “ПО-ДОРОГОМУ” ----
+       1) мягкие ауры (не кислотные)
+       2) vignette/глубина
+       3) лёгкий noise (через SVG data-uri)
+    */
+    body::before{
+      content:"";
+      position:fixed;
+      inset:-2px;
+      pointer-events:none;
+      z-index:-2;
+      background:
+        radial-gradient(900px 620px at 10% -10%, rgba(124,92,255,.22), transparent 60%),
+        radial-gradient(900px 620px at 90% 0%, rgba(45,212,191,.14), transparent 55%),
+        radial-gradient(1000px 700px at 50% 120%, rgba(124,92,255,.12), transparent 62%),
+        radial-gradient(900px 600px at 50% 30%, rgba(255,255,255,.05), transparent 62%),
+        linear-gradient(180deg, rgba(255,255,255,.03), transparent 35%),
+        var(--bg);
+      filter: saturate(1.05);
+    }
+
+    body::after{
+      content:"";
+      position:fixed;
+      inset:0;
+      pointer-events:none;
+      z-index:-1;
+      background:
+        radial-gradient(1200px 800px at 50% 15%, rgba(0,0,0,.20), transparent 60%),
+        radial-gradient(1200px 900px at 50% 110%, rgba(0,0,0,.35), transparent 55%),
+        /* noise */
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='240' height='240' filter='url(%23n)' opacity='.10'/%3E%3C/svg%3E");
+      mix-blend-mode: overlay;
+      opacity:.55;
+    }
+
+    [data-theme="light"] body::before{
+      background:
+        radial-gradient(900px 620px at 10% -10%, rgba(124,92,255,.14), transparent 62%),
+        radial-gradient(900px 620px at 90% 0%, rgba(45,212,191,.12), transparent 55%),
+        radial-gradient(1000px 700px at 50% 120%, rgba(124,92,255,.10), transparent 62%),
+        linear-gradient(180deg, rgba(0,0,0,.03), transparent 35%),
+        var(--bg);
+      filter:saturate(1.02);
+    }
+    [data-theme="light"] body::after{
+      mix-blend-mode: multiply;
+      opacity:.22;
+    }
+
+    a{color:inherit;text-decoration:none}
+    .container{max-width:var(--max); margin:0 auto; padding:0 20px}
+
+    .skip{
+      position:absolute; left:-999px; top:10px;
+      background:var(--panel); border:1px solid var(--line);
+      padding:10px 12px; border-radius:12px; z-index:9999;
+    }
+    .skip:focus{left:20px}
+
+    /* Header */
+    header{
+      position:sticky; top:0; z-index:50;
+      backdrop-filter:saturate(1.1) blur(14px);
+      background:rgba(10,14,26,.55);
+      border-bottom:1px solid var(--line);
+    }
+    [data-theme="light"] header{ background:rgba(246,247,251,.72); }
+
+    .nav{
+      display:flex; align-items:center; justify-content:space-between;
+      height:68px;
+    }
+    .brand{
+      display:flex; gap:12px; align-items:center; font-weight:700;
+      letter-spacing:.4px;
+    }
+    .logo{
+      width:34px; height:34px; border-radius:12px;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      box-shadow: 0 10px 30px rgba(124,92,255,.25);
+    }
+    .navlinks{display:flex; gap:18px; align-items:center}
+    .navlinks a{
+      padding:10px 12px; border-radius:12px;
+      color:var(--muted);
+    }
+    .navlinks a:hover{background:rgba(255,255,255,.06); color:var(--text)}
+    [data-theme="light"] .navlinks a:hover{background:rgba(0,0,0,.05)}
+    .navactions{display:flex; gap:10px; align-items:center}
+    .btn{
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.06);
+      color:var(--text);
+      padding:10px 12px;
+      border-radius:14px;
+      cursor:pointer;
+      transition: transform .12s ease, background .12s ease;
+      display:inline-flex; gap:10px; align-items:center;
+    }
+    [data-theme="light"] .btn{background:rgba(0,0,0,.04)}
+    .btn:hover{transform: translateY(-1px); background:rgba(255,255,255,.10)}
+    [data-theme="light"] .btn:hover{background:rgba(0,0,0,.06)}
+    .btn.primary{
+      border:0;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      color:#091023;
+      font-weight:700;
+    }
+    .btn.primary:hover{filter:brightness(1.05)}
+    .pill{
+      padding:6px 10px;
+      border-radius:999px;
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.05);
+      color:var(--muted);
+      font-size:12px;
+    }
+
+    /* Hero */
+    .hero{padding:64px 0 28px}
+    .heroGrid{
+      display:grid;
+      grid-template-columns: 1.2fr .8fr;
+      gap:16px;
+      align-items:stretch;
+    }
+    .card{
+      background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
+      border:1px solid var(--line);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow2);
+    }
+    [data-theme="light"] .card{background:linear-gradient(180deg,#fff,#fff)}
+    .heroMain{padding:24px}
+    .kicker{
+      display:flex; gap:10px; align-items:center; flex-wrap:wrap;
+      margin-bottom:10px;
+    }
+    h1{
+      margin:0 0 10px;
+      font-size: clamp(28px, 4vw, 46px);
+      line-height:1.08;
+      letter-spacing:-.8px;
+    }
+    .lead{
+      margin:0 0 16px;
+      color:var(--muted);
+      font-size:16px;
+      max-width:60ch;
+    }
+    .heroStats{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:12px;
+      margin-top:16px;
+    }
+    .stat{
+      padding:14px;
+      border-radius:16px;
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.05);
+    }
+    [data-theme="light"] .stat{background:rgba(0,0,0,.03)}
+    .stat b{display:block; font-size:18px}
+    .stat span{color:var(--muted); font-size:12px}
+    .heroSide{padding:18px; display:flex; flex-direction:column; gap:12px}
+    .mini{
+      padding:14px;
+      border-radius:16px;
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.05);
+    }
+    [data-theme="light"] .mini{background:rgba(0,0,0,.03)}
+    .mini h3{margin:0 0 8px; font-size:14px}
+    .mini p{margin:0; color:var(--muted); font-size:13px}
+
+    /* Section */
+    section{padding:44px 0}
+    .sectionHead{
+      display:flex; justify-content:space-between; align-items:flex-end;
+      gap:14px; margin-bottom:16px; flex-wrap:wrap;
+    }
+    .sectionHead h2{margin:0; font-size:20px; letter-spacing:-.2px}
+    .sectionHead p{margin:0; color:var(--muted); max-width:70ch}
+
+    /* Filters */
+    .toolbar{
+      display:flex; gap:12px; flex-wrap:wrap;
+      align-items:center;
+      background:rgba(255,255,255,.04);
+      border:1px solid var(--line);
+      border-radius:var(--radius);
+      padding:14px;
+    }
+    [data-theme="light"] .toolbar{background:rgba(0,0,0,.03)}
+    .search{
+      flex:1;
+      min-width:220px;
+      display:flex; align-items:center; gap:10px;
+      padding:10px 12px;
+      border:1px solid var(--line);
+      border-radius:14px;
+      background:rgba(255,255,255,.05);
+    }
+    [data-theme="light"] .search{background:rgba(0,0,0,.03)}
+    .search input{
+      width:100%;
+      border:0; outline:0;
+      background:transparent;
+      color:var(--text);
+      font-size:14px;
+    }
+    .filters{display:flex; gap:8px; flex-wrap:wrap}
+    .chipBtn{
+      padding:9px 11px;
+      border-radius:999px;
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.05);
+      color:var(--muted);
+      cursor:pointer;
+      font-size:13px;
+    }
+    [data-theme="light"] .chipBtn{background:rgba(0,0,0,.03)}
+    .chipBtn[aria-pressed="true"]{
+      background:rgba(124,92,255,.20);
+      color:var(--text);
+      border-color: rgba(124,92,255,.45);
+    }
+
+    /* Projects grid */
+    .grid{
+      display:grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap:14px;
+      margin-top:16px;
+    }
+    .proj{
+      padding:16px;
+      border-radius:var(--radius);
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.04);
+      box-shadow:var(--shadow2);
+      display:flex; flex-direction:column; gap:10px;
+      min-height: 200px;
+      position:relative;
+      overflow:hidden;
+    }
+    [data-theme="light"] .proj{background:#fff}
+    .proj::before{
+      content:"";
+      position:absolute; inset:-80px -80px auto auto;
+      width:160px; height:160px; border-radius:50%;
+      background: radial-gradient(circle at 30% 30%, rgba(124,92,255,.22), transparent 60%);
+      pointer-events:none;
+    }
+    .projTop{display:flex; align-items:flex-start; justify-content:space-between; gap:10px;}
+    .proj h3{margin:0; font-size:16px; letter-spacing:-.2px}
+    .proj p{margin:0; color:var(--muted); font-size:13px}
+    .meta{display:flex; gap:8px; flex-wrap:wrap; margin-top:6px}
+    .tag{
+      font-size:12px;
+      padding:6px 10px;
+      border-radius:999px;
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.05);
+      color:var(--muted);
+    }
+    [data-theme="light"] .tag{background:rgba(0,0,0,.03)}
+    .projBottom{
+      margin-top:auto;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:10px;
+    }
+    .links{display:flex; gap:8px; flex-wrap:wrap}
+    .link{
+      padding:8px 10px;
+      border-radius:12px;
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.05);
+      color:var(--text);
+      font-size:13px;
+      cursor:pointer;
+      display:inline-flex; gap:8px; align-items:center;
+      transition: transform .12s ease, background .12s ease;
+    }
+    [data-theme="light"] .link{background:rgba(0,0,0,.03)}
+    .link:hover{transform: translateY(-1px); background:rgba(255,255,255,.10)}
+    [data-theme="light"] .link:hover{background:rgba(0,0,0,.06)}
+    .empty{
+      margin-top:16px;
+      padding:16px;
+      border-radius:var(--radius);
+      border:1px dashed var(--line);
+      color:var(--muted);
+      background:rgba(255,255,255,.03);
+    }
+
+    /* About / Skills */
+    .two{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:14px;
+    }
+    .box{
+      padding:18px;
+      border-radius:var(--radius);
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.04);
+      box-shadow:var(--shadow2);
+    }
+    [data-theme="light"] .box{background:#fff}
+    .box h3{margin:0 0 10px}
+    .list{margin:0; padding-left:18px; color:var(--muted)}
+    .list li{margin:8px 0}
+    .skillGrid{
+      display:grid;
+      grid-template-columns:repeat(2,1fr);
+      gap:10px;
+      margin-top:10px;
+    }
+    .skill{
+      padding:12px;
+      border-radius:16px;
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.05);
+    }
+    [data-theme="light"] .skill{background:rgba(0,0,0,.03)}
+    .skill b{display:block}
+    .skill span{color:var(--muted); font-size:12px}
+
+    /* Contact */
+    .contact{
+      display:flex; gap:10px; flex-wrap:wrap; align-items:center;
+      margin-top:10px;
+    }
+
+    /* Footer */
+    footer{
+      border-top:1px solid var(--line);
+      padding:24px 0;
+      color:var(--muted);
+    }
+    .foot{
+      display:flex; justify-content:space-between; gap:12px; flex-wrap:wrap;
+      align-items:center;
+    }
+
+    /* Dialog base */
+    dialog{
+      width:min(900px, calc(100% - 24px));
+      border:1px solid var(--line);
+      border-radius:22px;
+      background:var(--panel);
+      color:var(--text);
+      box-shadow:var(--shadow);
+      padding:0;
+    }
+    dialog::backdrop{
+      background: rgba(0,0,0,.55);
+      backdrop-filter: blur(2px);
+    }
+
+    .modal{display:flex; flex-direction:column;}
+    .modalHead{
+      padding:16px 16px 10px;
+      border-bottom:1px solid var(--line);
+      display:flex; align-items:flex-start; justify-content:space-between; gap:10px;
+    }
+    .modalHead h3{margin:0}
+    .modalBody{
+      padding:16px;
+      display:grid;
+      grid-template-columns: 1fr .9fr;
+      gap:14px;
+    }
+    .kv{
+      border:1px solid var(--line);
+      border-radius:18px;
+      padding:14px;
+      background:rgba(255,255,255,.04);
+    }
+    [data-theme="light"] .kv{background:rgba(0,0,0,.03)}
+    .kv b{display:block; margin-bottom:8px}
+    .kv ul{margin:0; padding-left:18px; color:var(--muted)}
+
+    /* Gallery */
+    .gallery{
+      display:grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap:10px;
+    }
+    @media (max-width: 980px){ .gallery{grid-template-columns: repeat(2, 1fr);} }
+    @media (max-width: 560px){ .gallery{grid-template-columns: 1fr;} }
+
+    .gItem{
+      border-radius:14px;
+      overflow:hidden;
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.04);
+      cursor:pointer;
+      padding:0;
+    }
+    [data-theme="light"] .gItem{background:rgba(0,0,0,.03)}
+    .gItem img{
+      width:100%;
+      height:120px;
+      object-fit:cover;
+      display:block;
+      transition: transform .15s ease;
+    }
+    .gItem:hover img{transform: scale(1.03)}
+    .galleryEmpty{
+      color:var(--muted);
+      font-size:13px;
+      padding:10px 0 0;
+    }
+
+    /* Lightbox dialog */
+    #lightboxDialog{
+      width:min(1100px, calc(100% - 24px));
+      background: rgba(12,16,28,.78);
+      overflow:hidden;
+    }
+    [data-theme="light"] #lightboxDialog{
+      background: rgba(255,255,255,.90);
+    }
+    #lightboxDialog::backdrop{
+      background: rgba(0,0,0,.72);
+      backdrop-filter: blur(2px);
+    }
+    .lbTop{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      padding:12px 12px;
+      border-bottom:1px solid var(--line);
+    }
+    .lbTitle{
+      color:var(--muted);
+      font-size:13px;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+    .lbClose{
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.08);
+      color:var(--text);
+      padding:10px 12px;
+      border-radius:14px;
+      cursor:pointer;
+      transition: transform .12s ease, background .12s ease;
+    }
+    [data-theme="light"] .lbClose{background:rgba(0,0,0,.05)}
+    .lbClose:hover{transform: translateY(-1px); background:rgba(255,255,255,.14)}
+    [data-theme="light"] .lbClose:hover{background:rgba(0,0,0,.08)}
+
+    .lbBody{
+      position:relative;
+      background:rgba(0,0,0,.20);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      min-height: 260px;
+      padding:12px;
+    }
+    [data-theme="light"] .lbBody{background:rgba(0,0,0,.04)}
+
+    .lbImg{
+      max-width:100%;
+      max-height: calc(85vh - 110px);
+      object-fit:contain;
+      display:block;
+      border-radius:16px;
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.04);
+    }
+    [data-theme="light"] .lbImg{background: rgba(0,0,0,.03)}
+
+    .lbNav{
+      position:absolute;
+      top:50%;
+      transform: translateY(-50%);
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.08);
+      color:var(--text);
+      width:42px;
+      height:42px;
+      border-radius:14px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      cursor:pointer;
+      user-select:none;
+      transition: background .12s ease, transform .12s ease;
+    }
+    [data-theme="light"] .lbNav{background:rgba(0,0,0,.05)}
+    .lbNav:hover{background:rgba(255,255,255,.14); transform: translateY(-50%) translateY(-1px);}
+    [data-theme="light"] .lbNav:hover{background:rgba(0,0,0,.08)}
+    .lbPrev{left:12px}
+    .lbNext{right:12px}
+
+    /* Responsive */
+    @media (max-width: 980px){
+      .heroGrid{grid-template-columns:1fr}
+      .grid{grid-template-columns: repeat(2,1fr)}
+      .two{grid-template-columns:1fr}
+      .modalBody{grid-template-columns:1fr}
+    }
+    @media (max-width: 560px){
+      .navlinks{display:none}
+      .grid{grid-template-columns:1fr}
+      .heroStats{grid-template-columns:1fr}
+    }
+
+    @media (prefers-reduced-motion: reduce){
+      *{transition:none !important; scroll-behavior:auto !important}
+    }
+        /* Убираем системную "красную" обводку */
+    dialog:focus { outline: none; }
+
+    /* Нормальный фокус для кнопок/миниатюр (только когда реально нужен) */
+    button:focus { outline: none; }
+   
+
+  </style>
+</head>
+
+<body>
+<a class="skip" href="#projects">Перейти к кейсам</a>
+
+<header>
+  <div class="container nav" role="navigation" aria-label="Основная навигация">
+    <a class="brand" href="#top" aria-label="На главную">
+      <span class="logo" aria-hidden="true"></span>
+      <span>hush!k dev</span>
+    </a>
+
+    <nav class="navlinks" aria-label="Разделы">
+      <a href="#projects">Кейсы</a>
+      <!-- <a href="#about">Обо мне</a> -->
+      <a href="#stack">Стек</a>
+      <a href="#contact">Контакты</a>
+    </nav>
+
+    <div class="navactions">
+      <button class="btn" id="themeBtn" type="button" aria-label="Переключить тему">🌓</button>
+    </div>
+  </div>
+</header>
+
+<main id="top" class="container">
+  <!-- HERO -->
+  <section class="hero" aria-label="Приветственный блок">
+    <div class="heroGrid">
+      <div class="card heroMain">
+        <div class="kicker">
+          <span class="pill">Fullstack разработчик</span>
+        </div>
+
+        <h1>hush!k dev</h1>
+        <p class="lead">
+          Привет, я кодер с огромным опытом работы (более 6 лет).<br>Берусь за любые заказы (кроме лютой чернухи по РФ/РБ).<br>Имею огромную репутацию на форумах и большое количество отзывов.
+        </p>
+
+        <div style="display:flex; gap:10px; flex-wrap:wrap">
+          <a class="btn primary" href="#projects">🚀 Мои кейсы</a>
+          <!-- <a class="btn" href="#about">👤 Обо мне</a> -->
+        </div>
+
+        <div class="heroStats" aria-label="Ключевые цифры">
+          <div class="stat"><b>1000+</b><span>Выполненных работ</span></div>
+          <div class="stat"><b>5+ лет</b><span>Опыт работы</span></div>
+          <div class="stat"><b>10:00 - 21:00</b><span>Время работы</span></div>
+        </div>
+      </div>
+
+      <aside class="card heroSide" aria-label="Коротко обо мне">
+        <div class="mini">
+          <h3>Что делаю</h3>
+          <p>Разрабатываю абсолютно любые проекты под ваши задачи. Гарантирую поддержку на всех этапах работы.</p>
+        </div>
+        <div class="mini">
+          <h3>Как работаю</h3>
+          <p>Работаю исключительно через популярные гарант боты такие как: лолз, континенталь, гриди, гет, форумных гарантов. Либо 30/70 если вам неудобен гарант.</p>
+        </div>
+        <div class="mini">
+          <h3>Направления работы</h3>
+          <p>Парсеры, Боты, Чекеры, Автопост, Лендинги, Фишинг, Копии сайтов, Ратники, Стиллеры, Спамеры, Брутеры, Дрейнеры, obf/crypt</p>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <!-- PROJECTS -->
+  <section id="projects" aria-label="Кейсы">
+    <div class="sectionHead">
+      <div>
+        <h2>Кейсы</h2>
+        <p>Ниже вы можете ознакомиться с моими работами</p>
+      </div>
+    </div>
+
+    <div class="toolbar" role="region" aria-label="Панель фильтров">
+      <div class="search" role="search">
+        <span aria-hidden="true">🔎</span>
+        <input id="q" type="search" placeholder="Поиск: бот, лендинг..." autocomplete="off" />
+      </div>
+
+      <div class="filters" aria-label="Категории">
+        <button class="chipBtn" type="button" data-cat="all" aria-pressed="true">Все</button>
+        <button class="chipBtn" type="button" data-cat="bots" aria-pressed="false">Боты</button>
+        <button class="chipBtn" type="button" data-cat="lends" aria-pressed="false">Лендинги</button>
+      </div>
+    </div>
+
+    <div id="grid" class="grid" aria-live="polite"></div>
+    <div id="empty" class="empty" hidden>Ничего не найдено.</div>
+  </section>
+
+  <!-- ABOUT -->
+ <!--  <section id="about" aria-label="Обо мне">
+    <div class="sectionHead">
+      <div>
+        <h2>Обо мне</h2>
+        <p>Короткий “питч”, который можно легко адаптировать под заказчика/вакансию.</p>
+      </div>
+    </div>
+
+    <div class="two">
+      <div class="box">
+        <h3>Позиционирование</h3>
+        <ul class="list">
+          <li>Делаю продуктовый фронтенд/фуллстек: скорость, качество, понятная архитектура.</li>
+          <li>Умею “собирать” сложные кейсы: авторизация, платежи, аналитика, роли/права, оптимизация.</li>
+          <li>Люблю цифры: метрики, перфоманс, конверсия, LCP/CLS/TTFB, A/B тесты.</li>
+        </ul>
+      </div>
+
+      <div class="box">
+        <h3>Что получит команда</h3>
+        <ul class="list">
+          <li>Понятные компоненты/дизайн-система, меньше хаоса в UI.</li>
+          <li>Стабильный релиз-процесс: тесты, линтеры, CI, код-ревью.</li>
+          <li>Оптимизация загрузки, регресс-контроль, логирование ошибок.</li>
+        </ul>
+      </div>
+    </div>
+  </section> -->
+
+  <!-- STACK -->
+  <section id="stack" aria-label="Стек">
+    <div class="sectionHead">
+      <div>
+        <h2>Стек и навыки</h2>
+        <p>Ниже можете ознакомиться с тем, какие ЯП и фреймворки я использую</p>
+      </div>
+    </div>
+
+    <div class="box">
+      <div class="skillGrid">
+        <div class="skill"><b>Technologies</b><span>OOP, Web, Desktop, Mobile, Web3</span></div>
+        <div class="skill"><b>Languages</b><span>Python, NodeJS, C++, C#, Java, Kotlin, Swift, JS</span></div>
+        <div class="skill"><b>Databases</b><span>SQL, MongoDB, Elastic, RabbitMQ, Redis</span></div>
+        <div class="skill"><b>DevOps</b><span>Nginx, Apache, iptables, f2b, Docker, k8s, Vagrant, CI/CD</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact" aria-label="Контакты">
+    <div class="sectionHead">
+      <div>
+        <h2>Контакты</h2>
+        <p>Всегда сверяйте контакты! Много фейков.</p>
+      </div>
+    </div>
+
+    <div class="box">
+      <div class="contact">
+        <a class="btn primary" href="https://t.me/hush1k_coder">💬 Telegram</a>
+        <a class="btn" href="https://t.me/hush1k_info">👥 Channel</a>
+        <a class="btn" href="https://t.me/hush1k_rep">📣 Reputation</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="container foot">
+    <span>© hush!k - зоебись кодеер))</span>
+  </div>
+</footer>
+
+<!-- MODAL: CASE -->
+<dialog id="caseDialog" aria-labelledby="caseTitle">
+  <div class="modal">
+    <div class="modalHead">
+      <div>
+        <h3 id="caseTitle">Кейс</h3>
+        <div class="meta" id="caseMeta"></div>
+      </div>
+      <button class="btn" id="closeDialogBtn" type="button" aria-label="Закрыть">✕</button>
+    </div>
+
+    <div class="modalBody">
+      <div>
+        <div class="kv">
+          <b>Описание кейса</b>
+          <ul id="caseDescription"></ul>
+        </div>
+
+        <div class="kv" style="margin-top:12px">
+          <b>Информация</b>
+          <ul id="caseInfo"></ul>
+        </div>
+      </div>
+
+      <div>
+        <div class="kv">
+          <b>Изображения</b>
+          <div id="caseImages" class="gallery"></div>
+        </div>
+
+        <div class="kv" style="margin-top:12px">
+          <b>Стек</b>
+          <div class="meta" id="caseStack"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</dialog>
+
+<!-- LIGHTBOX: тоже dialog, чтобы был ПОВЕРХ caseDialog -->
+<dialog id="lightboxDialog" aria-label="Просмотр изображений">
+  <div class="lbTop">
+    <div class="lbTitle" id="lbTitle">1 / 1</div>
+    <button class="lbClose" id="lbClose" type="button" aria-label="Закрыть">✕</button>
+  </div>
+
+  <div class="lbBody" id="lbBody">
+    <button class="lbNav lbPrev" id="lbPrev" type="button" aria-label="Предыдущее">‹</button>
+    <img class="lbImg" id="lbImg" alt="">
+    <button class="lbNav lbNext" id="lbNext" type="button" aria-label="Следующее">›</button>
+  </div>
+</dialog>
+
+<script>
+  // -----------------------------
+  // DATA: кейсы
+  // images можно:
+  // 1) [{src, alt}, ...]
+  // 2) ["path1.jpg", "path2.jpg"]
+  // -----------------------------
+  const projects = [
+    {
+      id: "bot-for-team",
+      title: "Бот для тимы",
+      category: "bots",
+      summary: "Бот под разные проекты. Написан с нуля. Масштабируется и кастомизируется.",
+      stack: ["Node.js", "Telegraf", "Express"],
+      description: [
+        "Бот под разные проекты. Написан с нуля. Масштабируется и кастомизируется.",
+      ],
+      solution: [
+        "Бот был написан с полного нуля. Любые дополнения делаются по вашему ТЗ",
+        "Лендинги ставятся любые кроме РФ/РБ!!",
+        "Демо бот: @hush1k_demo_bot"
+      ],
+      images: [
+        { src: "img/cases/bot-1.jpg", alt: "Главный экран бота" },
+        { src: "img/cases/bot-2.jpg", alt: "Админ-панель" },
+        { src: "img/cases/bot-3.jpg", alt: "Логи и статусы" }
+      ],
+    },
+  ];
+
+  // -----------------------------
+  // Helpers
+  // -----------------------------
+  const $ = (sel, root=document) => root.querySelector(sel);
+  const $$ = (sel, root=document) => [...root.querySelectorAll(sel)];
+
+  const escapeHtml = (str) =>
+    String(str)
+      .replaceAll("&","&amp;")
+      .replaceAll("<","&lt;")
+      .replaceAll(">","&gt;")
+      .replaceAll('"',"&quot;")
+      .replaceAll("'","&#039;");
+
+  const categoryLabel = (cat) => ({ bots: "Боты", lends: "Лендинги" }[cat] || cat);
+
+  function normalizeImages(images){
+    if (!images || !Array.isArray(images) || images.length === 0) return [];
+    return images.map(img => {
+      if (typeof img === "string") return { src: img, alt: "Изображение кейса" };
+      return { src: img?.src, alt: img?.alt || "Изображение кейса" };
+    }).filter(x => x && x.src);
+  }
+
+  // -----------------------------
+  // State
+  // -----------------------------
+  const state = { q: "", cat: "all", filtered: [] };
+
+  // -----------------------------
+  // Render grid
+  // -----------------------------
+  const grid = $("#grid");
+  const empty = $("#empty");
+
+  function projectCard(p, index){
+    const tags = [
+      `<span class="tag">${escapeHtml(categoryLabel(p.category))}</span>`,
+      ...(p.stack || []).slice(0,2).map(s => `<span class="tag">${escapeHtml(s)}</span>`)
+    ].join("");
+
+    return `
+      <article class="proj" aria-label="Кейс: ${escapeHtml(p.title)}">
+        <div class="projTop">
+          <div>
+            <h3>${escapeHtml(p.title)}</h3>
+            <p>${escapeHtml(p.summary || "")}</p>
+            <div class="meta" aria-label="Теги">${tags}</div>
+          </div>
+        </div>
+        <div class="projBottom">
+          <div class="links">
+            <button class="link" type="button" data-open="${index}">📌 Ознакомиться</button>
+          </div>
+        </div>
+      </article>
+    `;
+  }
+
+  function applyFilters(){
+    const q = state.q.trim().toLowerCase();
+    let items = projects.slice();
+
+    if (state.cat !== "all") items = items.filter(p => p.category === state.cat);
+
+    if (q){
+      items = items.filter(p => {
+        const hay = [
+          p.title, p.summary, p.category,
+          ...(p.stack || []),
+          ...(p.description || []),
+          ...(p.solution || [])
+        ].join(" ").toLowerCase();
+        return hay.includes(q);
+      });
+    }
+
+    state.filtered = items;
+  }
+
+  function render(){
+    applyFilters();
+    const items = state.filtered;
+
+    grid.innerHTML = items.map((p, idx) => projectCard(p, idx)).join("");
+    empty.hidden = items.length > 0;
+
+    $$("[data-open]", grid).forEach(btn => {
+      btn.addEventListener("click", () => openCase(Number(btn.dataset.open)));
+    });
+  }
+
+  // -----------------------------
+  // Case modal
+  // -----------------------------
+  const caseDlg = $("#caseDialog");
+
+  function openCase(index){
+    const p = state.filtered[index];
+    if (!p) return;
+
+    $("#caseTitle").textContent = p.title || "Кейс";
+    $("#caseMeta").innerHTML = `<span class="tag">Категория: ${escapeHtml(categoryLabel(p.category))}</span>`;
+
+    $("#caseDescription").innerHTML = (p.description || []).map(x => `<li>${escapeHtml(x)}</li>`).join("");
+    $("#caseInfo").innerHTML = (p.solution || []).map(x => `<li>${escapeHtml(x)}</li>`).join("");
+    $("#caseStack").innerHTML = (p.stack || []).map(s => `<span class="tag">${escapeHtml(s)}</span>`).join("");
+
+    const imgs = normalizeImages(p.images);
+    const holder = $("#caseImages");
+
+    if (imgs.length === 0){
+      holder.innerHTML = `<div class="galleryEmpty">Нет изображений. Добавь <code>images</code> в объект кейса.</div>`;
+    } else {
+      holder.innerHTML = imgs.map((i, idx) => `
+        <button class="gItem" type="button" data-img-index="${idx}" aria-label="${escapeHtml(i.alt)}">
+          <img src="${escapeHtml(i.src)}" alt="${escapeHtml(i.alt)}" loading="lazy">
+        </button>
+      `).join("");
+
+      $$("[data-img-index]", holder).forEach(btn => {
+        btn.addEventListener("click", () => {
+          const start = Number(btn.dataset.imgIndex);
+          openLightbox(imgs, start, p.title || "Кейс");
+        });
+      });
+    }
+
+    caseDlg.showModal();
+    $("#closeDialogBtn").focus();
+  }
+
+  function closeCase(){
+    caseDlg.close();
+  }
+
+  $("#closeDialogBtn").addEventListener("click", closeCase);
+
+  caseDlg.addEventListener("click", (e) => {
+    const rect = caseDlg.getBoundingClientRect();
+    const inDialog = (
+      e.clientX >= rect.left && e.clientX <= rect.right &&
+      e.clientY >= rect.top  && e.clientY <= rect.bottom
+    );
+    if (!inDialog) closeCase();
+  });
+
+  // -----------------------------
+  // Lightbox dialog (поверх)
+  // -----------------------------
+  const lbDlg = $("#lightboxDialog");
+  const lbImg = $("#lbImg");
+  const lbTitle = $("#lbTitle");
+  const lbClose = $("#lbClose");
+  const lbPrev = $("#lbPrev");
+  const lbNext = $("#lbNext");
+  const lbBody = $("#lbBody");
+
+  let lbImages = [];
+  let lbIndex = 0;
+  let lbCaseTitle = "Кейс";
+  let lastFocusEl = null;
+
+  function setLb(index){
+    const total = lbImages.length;
+    if (!total) return;
+
+    lbIndex = (index + total) % total;
+    const it = lbImages[lbIndex];
+
+    lbImg.src = it.src;
+    lbImg.alt = it.alt || "Изображение";
+    lbTitle.textContent = `${lbCaseTitle} — ${lbIndex + 1} / ${total}`;
+
+    // стрелки не нужны если 1 фото
+    const showNav = total > 1;
+    lbPrev.style.display = showNav ? "" : "none";
+    lbNext.style.display = showNav ? "" : "none";
+  }
+
+  function openLightbox(images, startIndex, caseTitle){
+    lbImages = images.slice();
+    lbIndex = startIndex || 0;
+    lbCaseTitle = caseTitle || "Кейс";
+    lastFocusEl = document.activeElement;
+
+    setLb(lbIndex);
+    lbDlg.showModal();
+    lbClose.focus();
+  }
+
+  function closeLightbox(){
+  lbDlg.close();
+  lbImages = [];
+
+  // вместо возврата на миниатюру — фокусим кнопку закрытия кейса (и не будет краснеть)
+  const closeBtn = document.querySelector("#closeDialogBtn");
+  if (closeBtn) closeBtn.focus();
+}
+
+
+  lbClose.addEventListener("click", closeLightbox);
+  lbPrev.addEventListener("click", () => setLb(lbIndex - 1));
+  lbNext.addEventListener("click", () => setLb(lbIndex + 1));
+
+  // закрытие кликом по backdrop (dialog сам умеет, но сделаем красиво)
+  lbDlg.addEventListener("click", (e) => {
+    const rect = lbDlg.getBoundingClientRect();
+    const inDialog = (
+      e.clientX >= rect.left && e.clientX <= rect.right &&
+      e.clientY >= rect.top  && e.clientY <= rect.bottom
+    );
+    if (!inDialog) closeLightbox();
+  });
+
+  // свайпы
+  (function attachSwipe(){
+    let startX = 0, startY = 0, touching = false;
+
+    lbBody.addEventListener("touchstart", (e) => {
+      const t = e.touches[0];
+      startX = t.clientX;
+      startY = t.clientY;
+      touching = true;
+    }, {passive:true});
+
+    lbBody.addEventListener("touchend", (e) => {
+      if (!touching || lbImages.length < 2) return;
+      touching = false;
+
+      const t = e.changedTouches[0];
+      const dx = t.clientX - startX;
+      const dy = t.clientY - startY;
+
+      if (Math.abs(dx) > 45 && Math.abs(dx) > Math.abs(dy)){
+        if (dx < 0) setLb(lbIndex + 1);
+        else setLb(lbIndex - 1);
+      }
+    }, {passive:true});
+  })();
+
+  // клавиши
+  document.addEventListener("keydown", (e) => {
+    if (lbDlg.open){
+      if (e.key === "Escape") return closeLightbox();
+      if (e.key === "ArrowLeft") return setLb(lbIndex - 1);
+      if (e.key === "ArrowRight") return setLb(lbIndex + 1);
+      return;
+    }
+
+    if (caseDlg.open && e.key === "Escape"){
+      closeCase();
+    }
+  });
+
+  // -----------------------------
+  // Filters
+  // -----------------------------
+  $("#q").addEventListener("input", (e) => {
+    state.q = e.target.value;
+    render();
+  });
+
+  $$(".chipBtn").forEach(btn => {
+    btn.addEventListener("click", () => {
+      $$(".chipBtn").forEach(b => b.setAttribute("aria-pressed", "false"));
+      btn.setAttribute("aria-pressed", "true");
+      state.cat = btn.dataset.cat;
+      render();
+    });
+  });
+
+  // -----------------------------
+  // Theme
+  // -----------------------------
+  const themeBtn = $("#themeBtn");
+  const savedTheme = localStorage.getItem("theme");
+  if (savedTheme) document.documentElement.setAttribute("data-theme", savedTheme);
+
+  themeBtn.addEventListener("click", () => {
+    const cur = document.documentElement.getAttribute("data-theme") || "dark";
+    const next = (cur === "dark") ? "light" : "dark";
+    document.documentElement.setAttribute("data-theme", next);
+    localStorage.setItem("theme", next);
+  });
+
+  render();
+</script>
+</body>
+</html>
