@@ -54,6 +54,7 @@
       overflow-x:hidden;
     }
 
+    /* фон */
     body::before{
       content:"";
       position:fixed;
@@ -69,7 +70,6 @@
         var(--bg);
       filter: saturate(1.05);
     }
-
     body::after{
       content:"";
       position:fixed;
@@ -257,6 +257,7 @@
       color:var(--text);
       font-size:14px;
     }
+
     .filters{display:flex; gap:8px; flex-wrap:wrap}
     .chipBtn{
       padding:9px 11px;
@@ -396,6 +397,7 @@
       align-items:center;
     }
 
+    /* dialogs */
     dialog{
       width:min(900px, calc(100% - 24px));
       border:1px solid var(--line);
@@ -417,21 +419,42 @@
       display:flex; align-items:flex-start; justify-content:space-between; gap:10px;
     }
     .modalHead h3{margin:0}
+
     .modalBody{
       padding:16px;
       display:grid;
       grid-template-columns: 1fr .9fr;
       gap:14px;
+      align-items: stretch; /* важное */
     }
+
+    .modalCol{
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+      min-height:0;
+    }
+
     .kv{
       border:1px solid var(--line);
       border-radius:18px;
       padding:14px;
       background:rgba(255,255,255,.04);
+      min-height:0;
     }
     [data-theme="light"] .kv{background:rgba(0,0,0,.03)}
     .kv b{display:block; margin-bottom:8px}
     .kv ul{margin:0; padding-left:18px; color:var(--muted)}
+
+    /* РАСТЯГИВАЕМ НИЖНИЕ БЛОКИ (и только их) */
+    .kvInfo{ flex:1; }
+    .kvStack{ flex:1; }
+
+    /* images block */
+    .kvImages{
+      display:flex;
+      flex-direction:column;
+    }
 
     .gallery{
       display:grid;
@@ -464,6 +487,7 @@
       padding:10px 0 0;
     }
 
+    /* dots pager (без скачков: место всегда есть) */
     .galPager{
       display:flex;
       align-items:center;
@@ -472,7 +496,14 @@
       margin-top:12px;
       padding-top:10px;
       border-top:1px solid var(--line);
+      min-height:22px;
     }
+    .galPager.isHidden{
+      visibility:hidden;
+      opacity:0;
+      pointer-events:none;
+    }
+
     .gpDot{
       width:10px;
       height:10px;
@@ -492,6 +523,7 @@
     }
     .gpDot[aria-current="false"]{opacity:.7}
 
+    /* lightbox */
     #lightboxDialog{
       width:min(1100px, calc(100% - 24px));
       background: rgba(12,16,28,.78);
@@ -577,6 +609,7 @@
     .lbPrev{left:12px}
     .lbNext{right:12px}
 
+    /* responsive */
     @media (max-width: 980px){
       .heroGrid{grid-template-columns:1fr}
       .grid{grid-template-columns: repeat(2,1fr)}
@@ -587,53 +620,12 @@
       .grid{grid-template-columns:1fr}
       .heroStats{grid-template-columns:1fr}
     }
-
     @media (prefers-reduced-motion: reduce){
       *{transition:none !important; scroll-behavior:auto !important}
     }
 
     dialog:focus { outline: none; }
     button:focus { outline: none; }
-    /* FIX: одинаковая высота колонок + без скачков */
-/* Колонки */
-.modalBody{ align-items: stretch; }
-
-.modalCol{
-  display:flex;
-  flex-direction:column;
-  gap:12px;
-  min-height:0;
-}
-
-/* БАЗА: ничего не тянется */
-.modalCol .kv{
-  flex:0;
-  min-height:0;
-}
-
-/* ТЯНЕМ НИЖНИЙ БЛОК СЛЕВА (Информация) */
-.modalCol.left .kv:last-child{
-  flex:1;
-}
-
-/* Справа: нижний блок (Стек) тянем, верхний (Изображения) не тянем */
-.modalCol.right .kv:last-child{
-  flex:1;
-}
-
-/* Чтобы "Изображения" не распухали, но нормально жили */
-.kvImages{
-  display:flex;
-  flex-direction:column;
-}
-
-/* резерв места под точки, без скачков */
-.galPager{ min-height:22px; }
-.galPager.isHidden{
-  visibility:hidden;
-  opacity:0;
-  pointer-events:none;
-}
   </style>
 </head>
 
@@ -669,7 +661,9 @@
 
         <h1>hush!k dev</h1>
         <p class="lead">
-          Привет, я кодер с огромным опытом работы (более 6 лет).<br>Берусь за любые заказы (кроме лютой чернухи по РФ/РБ).<br>Имею огромную репутацию на форумах и большое количество отзывов.
+          Привет, я кодер с огромным опытом работы (более 6 лет).<br>
+          Берусь за любые заказы (кроме лютой чернухи по РФ/РБ).<br>
+          Имею огромную репутацию на форумах и большое количество отзывов.
         </p>
 
         <div style="display:flex; gap:10px; flex-wrap:wrap">
@@ -713,7 +707,6 @@
         <span aria-hidden="true">🔎</span>
         <input id="q" type="search" placeholder="Поиск: бот, лендинг..." autocomplete="off" />
       </div>
-
       <div class="filters" id="filters" aria-label="Категории"></div>
     </div>
 
@@ -764,6 +757,7 @@
   </div>
 </footer>
 
+<!-- CASE DIALOG -->
 <dialog id="caseDialog" aria-labelledby="caseTitle">
   <div class="modal">
     <div class="modalHead">
@@ -775,34 +769,35 @@
     </div>
 
     <div class="modalBody">
-  <div class="modalCol left">
-    <div class="kv kvFlex">
-      <b>Описание кейса</b>
-      <ul id="caseDescription"></ul>
-    </div>
+      <div class="modalCol left">
+        <div class="kv kvDesc">
+          <b>Описание кейса</b>
+          <ul id="caseDescription"></ul>
+        </div>
 
-    <div class="kv kvFlex">
-      <b>Информация</b>
-      <ul id="caseInfo"></ul>
-    </div>
-  </div>
+        <div class="kv kvInfo">
+          <b>Информация</b>
+          <ul id="caseInfo"></ul>
+        </div>
+      </div>
 
-  <div class="modalCol right">
-    <div class="kv kvImages">
-      <b>Изображения</b>
-      <div id="caseImages" class="gallery"></div>
-      <div id="caseGalleryPager" class="galPager isHidden"></div>
-    </div>
+      <div class="modalCol right">
+        <div class="kv kvImages">
+          <b>Изображения</b>
+          <div id="caseImages" class="gallery"></div>
+          <div id="caseGalleryPager" class="galPager isHidden"></div>
+        </div>
 
-    <div class="kv kvStack">
-      <b>Стек</b>
-      <div class="meta" id="caseStack"></div>
+        <div class="kv kvStack">
+          <b>Стек</b>
+          <div class="meta" id="caseStack"></div>
+        </div>
+      </div>
     </div>
-  </div>
-</div>
   </div>
 </dialog>
 
+<!-- LIGHTBOX -->
 <dialog id="lightboxDialog" aria-label="Просмотр изображений">
   <div class="lbTop">
     <div class="lbTitle" id="lbTitle">1 / 1</div>
@@ -817,9 +812,7 @@
 </dialog>
 
 <script>
-  // -----------------------------
-  // Helpers
-  // -----------------------------
+  // helpers
   const $ = (sel, root=document) => root.querySelector(sel);
   const $$ = (sel, root=document) => [...root.querySelectorAll(sel)];
 
@@ -839,11 +832,9 @@
     }).filter(x => x && x.src);
   }
 
-  // -----------------------------
-  // DATA
-  // -----------------------------
+  // data
   let projects = [];
-  let categoryMap = {}; // { key: "Label" }
+  let categoryMap = {};
 
   async function loadProjects(){
     try{
@@ -858,17 +849,14 @@
       projects = data.projects;
       categoryMap = data.categories || {};
 
-      $("#loadError").hidden = true;
-
-      // если в данных есть категории, которых нет в map — добавим автолейбл
-      // (чтобы ничего не ломалось)
+      // автолейбл, если забыли прописать категорию в map
       for (const p of projects){
         const k = String(p?.category || "");
-        if (!k) continue;
-        if (!categoryMap[k]) categoryMap[k] = k;
+        if (k && !categoryMap[k]) categoryMap[k] = k;
       }
 
-      render(); // один вход: рендер всё
+      $("#loadError").hidden = true;
+      render();
     }catch(err){
       console.error("Failed to load projects.json:", err);
       projects = [];
@@ -879,29 +867,11 @@
     }
   }
 
-  // -----------------------------
-  // State
-  // -----------------------------
+  // state
   const state = { q: "", cat: "all", filtered: [] };
-
-  // -----------------------------
-  // Categories (dynamic + counts)
-  // counts считаем по текущему поиску (q), но без применения cat,
-  // чтобы показывало "сколько найдется в каждой категории" при введенном поиске.
-  // -----------------------------
-  const filtersRoot = $("#filters");
 
   function labelForCategory(cat){
     return categoryMap[cat] || cat;
-  }
-
-  function getAllCategories(){
-    const set = new Set();
-    for (const p of projects){
-      if (p && p.category) set.add(String(p.category));
-    }
-    // сортируем по названию (label) по-русски
-    return [...set].sort((a,b) => labelForCategory(a).localeCompare(labelForCategory(b), "ru"));
   }
 
   function matchesQuery(p, qLower){
@@ -915,13 +885,21 @@
     return hay.includes(qLower);
   }
 
+  function getAllCategories(){
+    const set = new Set();
+    for (const p of projects){
+      if (p?.category) set.add(String(p.category));
+    }
+    return [...set].sort((a,b) => labelForCategory(a).localeCompare(labelForCategory(b), "ru"));
+  }
+
   function buildCategoryCountsByQuery(){
     const qLower = state.q.trim().toLowerCase();
     const counts = Object.create(null);
-
     let total = 0;
+
     for (const p of projects){
-      if (!p || !p.category) continue;
+      if (!p?.category) continue;
       if (!matchesQuery(p, qLower)) continue;
       total++;
       const c = String(p.category);
@@ -930,11 +908,12 @@
     return { counts, total };
   }
 
+  const filtersRoot = $("#filters");
+
   function renderFilters(){
     const cats = getAllCategories();
     const { counts, total } = buildCategoryCountsByQuery();
 
-    // если выбранной категории больше нет — сброс
     if (state.cat !== "all" && !cats.includes(state.cat)) state.cat = "all";
 
     const btnAll = `
@@ -964,9 +943,7 @@
     });
   }
 
-  // -----------------------------
-  // Grid
-  // -----------------------------
+  // grid
   const grid = $("#grid");
   const empty = $("#empty");
 
@@ -999,10 +976,7 @@
     let items = projects.slice();
 
     if (state.cat !== "all") items = items.filter(p => p.category === state.cat);
-
-    if (qLower){
-      items = items.filter(p => matchesQuery(p, qLower));
-    }
+    if (qLower) items = items.filter(p => matchesQuery(p, qLower));
 
     state.filtered = items;
   }
@@ -1020,14 +994,11 @@
   }
 
   function render(){
-    // важно: сначала фильтры (счётчики), потом сетка
     renderFilters();
     renderGridOnly();
   }
 
-  // -----------------------------
-  // Case modal + gallery dots (3 per page)
-  // -----------------------------
+  // case modal + gallery dots
   const caseDlg = $("#caseDialog");
   const caseImagesHolder = $("#caseImages");
   const pager = $("#caseGalleryPager");
@@ -1043,15 +1014,14 @@
 
   function renderDots(){
     const pages = galleryTotalPages();
+
     if (pages <= 1){
       pager.classList.add("isHidden");
       pager.innerHTML = "";
       return;
     }
-    
-    pager.classList.remove("isHidden");
 
-    pager.hidden = false;
+    pager.classList.remove("isHidden");
     pager.innerHTML = Array.from({length: pages}).map((_, i) => `
       <button
         class="gpDot"
@@ -1075,7 +1045,8 @@
 
     if (total === 0){
       caseImagesHolder.innerHTML = `<div class="galleryEmpty">Нет изображений. Добавь <code>images</code> в объект кейса.</div>`;
-      pager.hidden = true;
+      pager.classList.add("isHidden");
+      pager.innerHTML = "";
       return;
     }
 
@@ -1140,9 +1111,7 @@
     if (!inDialog) closeCase();
   });
 
-  // -----------------------------
-  // Lightbox
-  // -----------------------------
+  // lightbox
   const lbDlg = $("#lightboxDialog");
   const lbImg = $("#lbImg");
   const lbTitle = $("#lbTitle");
@@ -1175,7 +1144,6 @@
     lbImages = images.slice();
     lbIndex = startIndex || 0;
     lbCaseTitle = caseTitle || "Кейс";
-
     setLb(lbIndex);
     lbDlg.showModal();
     lbClose.focus();
@@ -1236,18 +1204,13 @@
     if (caseDlg.open && e.key === "Escape") closeCase();
   });
 
-  // -----------------------------
-  // Search
-  // -----------------------------
+  // search
   $("#q").addEventListener("input", (e) => {
     state.q = e.target.value;
-    // при поиске обновляем и счётчики, и сетку
     render();
   });
 
-  // -----------------------------
-  // Theme
-  // -----------------------------
+  // theme
   const themeBtn = $("#themeBtn");
   const savedTheme = localStorage.getItem("theme");
   if (savedTheme) document.documentElement.setAttribute("data-theme", savedTheme);
