@@ -594,6 +594,45 @@
 
     dialog:focus { outline: none; }
     button:focus { outline: none; }
+    /* FIX: одинаковая высота колонок + без скачков */
+.modalBody{
+  align-items: stretch;      /* растягиваем колонки */
+}
+
+.modalCol{
+  display:flex;
+  flex-direction:column;
+  gap:12px;                  /* вместо margin-top */
+  min-height:0;              /* важно для корректного растягивания */
+}
+
+.kvFlex{
+  flex:1;                    /* слева два блока делят высоту поровну */
+  min-height:0;
+}
+
+/* справа: изображения растягиваем, стек оставляем по контенту */
+.kvImages{
+  flex:1;
+  min-height:0;
+  display:flex;
+  flex-direction:column;
+}
+
+.kvStack{
+  flex:0;
+}
+
+/* резервируем место под точки всегда — без layout shift */
+.galPager{
+  min-height:22px;           /* место под точки */
+}
+
+.galPager.isHidden{
+  visibility:hidden;
+  opacity:0;
+  pointer-events:none;
+}
   </style>
 </head>
 
@@ -735,31 +774,31 @@
     </div>
 
     <div class="modalBody">
-      <div>
-        <div class="kv">
-          <b>Описание кейса</b>
-          <ul id="caseDescription"></ul>
-        </div>
-
-        <div class="kv" style="margin-top:12px">
-          <b>Информация</b>
-          <ul id="caseInfo"></ul>
-        </div>
-      </div>
-
-      <div>
-        <div class="kv">
-          <b>Изображения</b>
-          <div id="caseImages" class="gallery"></div>
-          <div id="caseGalleryPager" class="galPager" hidden></div>
-        </div>
-
-        <div class="kv" style="margin-top:12px">
-          <b>Стек</b>
-          <div class="meta" id="caseStack"></div>
-        </div>
-      </div>
+  <div class="modalCol left">
+    <div class="kv kvFlex">
+      <b>Описание кейса</b>
+      <ul id="caseDescription"></ul>
     </div>
+
+    <div class="kv kvFlex">
+      <b>Информация</b>
+      <ul id="caseInfo"></ul>
+    </div>
+  </div>
+
+  <div class="modalCol right">
+    <div class="kv kvImages">
+      <b>Изображения</b>
+      <div id="caseImages" class="gallery"></div>
+      <div id="caseGalleryPager" class="galPager isHidden"></div>
+    </div>
+
+    <div class="kv kvStack">
+      <b>Стек</b>
+      <div class="meta" id="caseStack"></div>
+    </div>
+  </div>
+</div>
   </div>
 </dialog>
 
@@ -1003,12 +1042,13 @@
 
   function renderDots(){
     const pages = galleryTotalPages();
-
     if (pages <= 1){
-      pager.hidden = true;
+      pager.classList.add("isHidden");
       pager.innerHTML = "";
       return;
     }
+    
+    pager.classList.remove("isHidden");
 
     pager.hidden = false;
     pager.innerHTML = Array.from({length: pages}).map((_, i) => `
