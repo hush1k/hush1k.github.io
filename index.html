@@ -6,10 +6,12 @@
   <meta name="description" content="hush!k dev" />
   <meta name="theme-color" content="#0b0f19" />
   <meta property="og:title" content="hush!k dev" />
-  <meta property="og:image" content="img/logo.png" />
   <meta property="og:description" content="portfolio" />
   <meta property="og:type" content="website" />
   <title>hush!k dev</title>
+
+  <!-- favicon -->
+  <link rel="icon" type="image/png" sizes="32x32" href="img/logo.png" />
 
   <style>
     :root{
@@ -125,11 +127,18 @@
       display:flex; gap:12px; align-items:center; font-weight:700;
       letter-spacing:.4px;
     }
-    .logo{
-      width:34px; height:34px; border-radius:12px;
-      background-image: url('img/logo.png')
-      box-shadow: 0 10px 30px rgba(124,92,255,.25);
+
+    /* ЛОГО */
+    .logoImg{
+      width:34px; height:34px;
+      border-radius:12px;
+      display:block;
+      border:1px solid var(--line);
+      box-shadow: 0 10px 30px rgba(124,92,255,.20);
+      object-fit:cover;
+      background: rgba(255,255,255,.06);
     }
+
     .navlinks{display:flex; gap:18px; align-items:center}
     .navlinks a{
       padding:10px 12px; border-radius:12px;
@@ -137,6 +146,7 @@
     }
     .navlinks a:hover{background:rgba(255,255,255,.06); color:var(--text)}
     [data-theme="light"] .navlinks a:hover{background:rgba(0,0,0,.05)}
+
     .navactions{display:flex; gap:10px; align-items:center}
     .btn{
       border:1px solid var(--line);
@@ -426,7 +436,7 @@
       display:grid;
       grid-template-columns: 1fr .9fr;
       gap:14px;
-      align-items: stretch; /* важное */
+      align-items: stretch;
     }
 
     .modalCol{
@@ -447,11 +457,9 @@
     .kv b{display:block; margin-bottom:8px}
     .kv ul{margin:0; padding-left:18px; color:var(--muted)}
 
-    /* РАСТЯГИВАЕМ НИЖНИЕ БЛОКИ (и только их) */
     .kvInfo{ flex:1; }
     .kvStack{ flex:1; }
 
-    /* images block */
     .kvImages{
       display:flex;
       flex-direction:column;
@@ -464,8 +472,8 @@
     }
     @media (max-width: 980px){ .gallery{grid-template-columns: repeat(2, 1fr);} }
     @media (max-width: 560px){
-      .gallery{grid-template-columns: repeat(2, 1fr);} /* 2x2 = 4 фото */
-      .gItem {height:110px;} /* чуть ниже, чтобы не распирало */
+      .gallery{grid-template-columns: repeat(2, 1fr);} /* 2x2 = 4 */
+      .gItem img{height:110px;}
     }
 
     .gItem{
@@ -477,21 +485,20 @@
       padding:0;
     }
     [data-theme="light"] .gItem{background:rgba(0,0,0,.03)}
-    .gItem {
+    .gItem img{
       width:100%;
       height:120px;
       object-fit:cover;
       display:block;
       transition: transform .15s ease;
     }
-    .gItem:hover {transform: scale(1.03)}
+    .gItem:hover img{transform: scale(1.03)}
     .galleryEmpty{
       color:var(--muted);
       font-size:13px;
       padding:10px 0 0;
     }
 
-    /* dots pager (без скачков: место всегда есть) */
     .galPager{
       display:flex;
       align-items:center;
@@ -579,7 +586,7 @@
     }
     [data-theme="light"] .lbBody{background:rgba(0,0,0,.04)}
 
-    .lb{
+    .lbImg{
       max-width:100%;
       max-height: calc(85vh - 110px);
       object-fit:contain;
@@ -588,7 +595,7 @@
       border:1px solid var(--line);
       background: rgba(255,255,255,.04);
     }
-    [data-theme="light"] .lb{background: rgba(0,0,0,.03)}
+    [data-theme="light"] .lbImg{background: rgba(0,0,0,.03)}
 
     .lbNav{
       position:absolute;
@@ -613,10 +620,9 @@
     .lbPrev{left:12px}
     .lbNext{right:12px}
 
-    /* responsive */
     @media (max-width: 980px){
       .heroGrid{grid-template-columns:1fr}
-      .grid{grid-template-columns: repeat(2,1fr)}
+      .grid{grid-template Placed: repeat(2,1fr)}
       .modalBody{grid-template-columns:1fr}
     }
     @media (max-width: 560px){
@@ -639,8 +645,7 @@
 <header>
   <div class="container nav" role="navigation" aria-label="Основная навигация">
     <a class="brand" href="#top" aria-label="На главную">
-      <span class="logo" aria-hidden="true">
-      </span>
+      <img class="logoImg" src="img/logo.png" alt="hush!k logo" />
       <span>hush!k dev</span>
     </a>
 
@@ -811,13 +816,12 @@
 
   <div class="lbBody" id="lbBody">
     <button class="lbNav lbPrev" id="lbPrev" type="button" aria-label="Предыдущее">‹</button>
-    < class="lb" id="lb" alt="">
+    <img class="lbImg" id="lbImg" alt="">
     <button class="lbNav lbNext" id="lbNext" type="button" aria-label="Следующее">›</button>
   </div>
 </dialog>
 
 <script>
-  // helpers
   const $ = (sel, root=document) => root.querySelector(sel);
   const $$ = (sel, root=document) => [...root.querySelectorAll(sel)];
 
@@ -829,7 +833,7 @@
       .replaceAll('"',"&quot;")
       .replaceAll("'","&#039;");
 
-   function normalizeImages(images){
+  function normalizeImages(images){
     if (!images || !Array.isArray(images) || images.length === 0) return [];
     return images.map(img => {
       if (typeof img === "string") return { src: img, alt: "Изображение кейса" };
@@ -837,7 +841,6 @@
     }).filter(x => x && x.src);
   }
 
-  // data
   let projects = [];
   let categoryMap = {};
 
@@ -854,7 +857,6 @@
       projects = data.projects;
       categoryMap = data.categories || {};
 
-      // автолейбл, если забыли прописать категорию в map
       for (const p of projects){
         const k = String(p?.category || "");
         if (k && !categoryMap[k]) categoryMap[k] = k;
@@ -872,7 +874,6 @@
     }
   }
 
-  // state
   const state = { q: "", cat: "all", filtered: [] };
 
   function labelForCategory(cat){
@@ -948,7 +949,6 @@
     });
   }
 
-  // grid
   const grid = $("#grid");
   const empty = $("#empty");
 
@@ -1003,17 +1003,19 @@
     renderGridOnly();
   }
 
-  // case modal + gallery dots
+  // ===== Case modal & gallery pagination =====
   const caseDlg = $("#caseDialog");
   const caseImagesHolder = $("#caseImages");
   const pager = $("#caseGalleryPager");
 
   let GALLERY_PER_PAGE = getGalleryPerPage();
-  
+  const DESKTOP_PER_PAGE = 3;
+  const MOBILE_PER_PAGE = 4;
+
   function getGalleryPerPage(){
-    // <=560px считаем "телефон"
-    return window.matchMedia("(max-width: 560px)").matches ? 4 : 3;
+    return window.matchMedia("(max-width: 560px)").matches ? MOBILE_PER_PAGE : DESKTOP_PER_PAGE;
   }
+
   let galleryAll = [];
   let galleryPage = 0;
   let galleryCaseTitle = "Кейс";
@@ -1054,7 +1056,7 @@
     const total = galleryAll.length;
 
     if (total === 0){
-      caseImagesHolder.innerHTML = `<div class="galleryEmpty">Нет изображений. Добавь <code>images</code> в объект кейса.</div>`;
+      caseImagesHolder.innerHTML = `<div class="galleryEmpty">Нет изображений.</div>`;
       pager.classList.add("isHidden");
       pager.innerHTML = "";
       return;
@@ -1089,6 +1091,22 @@
     });
   }
 
+  function onGalleryLayoutChange(){
+    const next = getGalleryPerPage();
+    if (next === GALLERY_PER_PAGE) return;
+
+    const firstIndex = galleryPage * GALLERY_PER_PAGE;
+    GALLERY_PER_PAGE = next;
+
+    galleryPage = Math.floor(firstIndex / GALLERY_PER_PAGE);
+    renderGalleryPage();
+  }
+
+  window.addEventListener("resize", () => {
+    if (!caseDlg.open) return;
+    onGalleryLayoutChange();
+  });
+
   function openCase(index){
     const p = state.filtered[index];
     if (!p) return;
@@ -1103,6 +1121,8 @@
     galleryAll = normalizeImages(p.images);
     galleryPage = 0;
     galleryCaseTitle = p.title || "Кейс";
+
+    GALLERY_PER_PAGE = getGalleryPerPage();
     renderGalleryPage();
 
     caseDlg.showModal();
@@ -1121,7 +1141,7 @@
     if (!inDialog) closeCase();
   });
 
-  // lightbox
+  // ===== Lightbox =====
   const lbDlg = $("#lightboxDialog");
   const lbImg = $("#lbImg");
   const lbTitle = $("#lbTitle");
@@ -1133,25 +1153,6 @@
   let lbImages = [];
   let lbIndex = 0;
   let lbCaseTitle = "Кейс";
-  function onGalleryLayoutChange(){
-  const next = getGalleryPerPage();
-  if (next === GALLERY_PER_PAGE) return;
-
-  // сохраняем текущую позицию (по первому элементу страницы)
-  const firstIndex = galleryPage * GALLERY_PER_PAGE;
-
-  GALLERY_PER_PAGE = next;
-
-  // пересчитать страницу так, чтобы не "прыгало" назад
-  galleryPage = Math.floor(firstIndex / GALLERY_PER_PAGE);
-  renderGalleryPage();
-}
-
-// ресайз + поворот
-window.addEventListener("resize", () => {
-  if (!caseDlg.open) return; // чтобы не дергать лишний раз
-  onGalleryLayoutChange();
-});
 
   function setLb(index){
     const total = lbImages.length;
@@ -1251,7 +1252,6 @@ window.addEventListener("resize", () => {
     localStorage.setItem("theme", next);
   });
 
-  // init
   loadProjects();
 </script>
 </body>
