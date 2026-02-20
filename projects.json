@@ -21,7 +21,7 @@
       "images": [
         { "src": "img/cases/bot/menu.png", "alt": "Главный экран бота" },
         { "src": "img/cases/bot/admin.png", "alt": "Админ-панель" },
-        { "src": "img/cases/bot-3.jpg", "alt": "Вбив-панель" },
+        { "src": "img/cases/bot/vbiv.png", "alt": "Вбив-панель" },
         { "src": "img/cases/bot/status.png", "alt": "Статус проекта" }
       ]
     }
