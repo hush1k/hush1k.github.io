@@ -6,6 +6,7 @@
   <meta name="description" content="hush!k dev" />
   <meta name="theme-color" content="#0b0f19" />
   <meta property="og:title" content="hush!k dev" />
+  <meta property="og:image" content="img/logo.png" />
   <meta property="og:description" content="portfolio" />
   <meta property="og:type" content="website" />
   <title>hush!k dev</title>
@@ -126,7 +127,7 @@
     }
     .logo{
       width:34px; height:34px; border-radius:12px;
-      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      background-image: url('img/logo.png')
       box-shadow: 0 10px 30px rgba(124,92,255,.25);
     }
     .navlinks{display:flex; gap:18px; align-items:center}
@@ -464,7 +465,7 @@
     @media (max-width: 980px){ .gallery{grid-template-columns: repeat(2, 1fr);} }
     @media (max-width: 560px){
       .gallery{grid-template-columns: repeat(2, 1fr);} /* 2x2 = 4 фото */
-      .gItem img{height:110px;} /* чуть ниже, чтобы не распирало */
+      .gItem {height:110px;} /* чуть ниже, чтобы не распирало */
     }
 
     .gItem{
@@ -476,14 +477,14 @@
       padding:0;
     }
     [data-theme="light"] .gItem{background:rgba(0,0,0,.03)}
-    .gItem img{
+    .gItem {
       width:100%;
       height:120px;
       object-fit:cover;
       display:block;
       transition: transform .15s ease;
     }
-    .gItem:hover img{transform: scale(1.03)}
+    .gItem:hover {transform: scale(1.03)}
     .galleryEmpty{
       color:var(--muted);
       font-size:13px;
@@ -578,7 +579,7 @@
     }
     [data-theme="light"] .lbBody{background:rgba(0,0,0,.04)}
 
-    .lbImg{
+    .lb{
       max-width:100%;
       max-height: calc(85vh - 110px);
       object-fit:contain;
@@ -587,7 +588,7 @@
       border:1px solid var(--line);
       background: rgba(255,255,255,.04);
     }
-    [data-theme="light"] .lbImg{background: rgba(0,0,0,.03)}
+    [data-theme="light"] .lb{background: rgba(0,0,0,.03)}
 
     .lbNav{
       position:absolute;
@@ -638,7 +639,8 @@
 <header>
   <div class="container nav" role="navigation" aria-label="Основная навигация">
     <a class="brand" href="#top" aria-label="На главную">
-      <span class="logo" aria-hidden="true"></span>
+      <span class="logo" aria-hidden="true">
+      </span>
       <span>hush!k dev</span>
     </a>
 
@@ -809,7 +811,7 @@
 
   <div class="lbBody" id="lbBody">
     <button class="lbNav lbPrev" id="lbPrev" type="button" aria-label="Предыдущее">‹</button>
-    <img class="lbImg" id="lbImg" alt="">
+    < class="lb" id="lb" alt="">
     <button class="lbNav lbNext" id="lbNext" type="button" aria-label="Следующее">›</button>
   </div>
 </dialog>
@@ -829,8 +831,8 @@
 
   function normalizeImages(images){
     if (!images || !Array.isArray(images) || images.length === 0) return [];
-    return images.map(img => {
-      if (typeof img === "string") return { src: img, alt: "Изображение кейса" };
+    return images.map( => {
+      if (typeof  === "string") return { src: , alt: "Изображение кейса" };
       return { src: img?.src, alt: img?.alt || "Изображение кейса" };
     }).filter(x => x && x.src);
   }
