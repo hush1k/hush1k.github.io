@@ -595,45 +595,45 @@
     dialog:focus { outline: none; }
     button:focus { outline: none; }
     /* FIX: одинаковая высота колонок + без скачков */
-.modalBody{
-  align-items: stretch;      /* растягиваем колонки */
-}
+/* Колонки */
+.modalBody{ align-items: stretch; }
 
 .modalCol{
   display:flex;
   flex-direction:column;
-  gap:12px;                  /* вместо margin-top */
-  min-height:0;              /* важно для корректного растягивания */
-}
-
-.kvFlex{
-  flex:1;                    /* слева два блока делят высоту поровну */
+  gap:12px;
   min-height:0;
 }
 
-/* справа: изображения растягиваем, стек оставляем по контенту */
-.kvImages{
+/* БАЗА: ничего не тянется */
+.modalCol .kv{
+  flex:0;
+  min-height:0;
+}
+
+/* ТЯНЕМ НИЖНИЙ БЛОК СЛЕВА (Информация) */
+.modalCol.left .kv:last-child{
   flex:1;
-  min-height:0;
+}
+
+/* Справа: нижний блок (Стек) тянем, верхний (Изображения) не тянем */
+.modalCol.right .kv:last-child{
+  flex:1;
+}
+
+/* Чтобы "Изображения" не распухали, но нормально жили */
+.kvImages{
   display:flex;
   flex-direction:column;
 }
 
-.kvStack{
-  flex:0;
-}
-
-/* резервируем место под точки всегда — без layout shift */
-.galPager{
-  min-height:22px;           /* место под точки */
-}
-
+/* резерв места под точки, без скачков */
+.galPager{ min-height:22px; }
 .galPager.isHidden{
   visibility:hidden;
   opacity:0;
   pointer-events:none;
 }
-  </style>
 </head>
 
 <body>
