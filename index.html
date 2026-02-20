@@ -1008,13 +1008,14 @@
   const caseImagesHolder = $("#caseImages");
   const pager = $("#caseGalleryPager");
 
-  let GALLERY_PER_PAGE = getGalleryPerPage();
   const DESKTOP_PER_PAGE = 3;
   const MOBILE_PER_PAGE = 4;
-
+  
   function getGalleryPerPage(){
     return window.matchMedia("(max-width: 560px)").matches ? MOBILE_PER_PAGE : DESKTOP_PER_PAGE;
   }
+  
+  let GALLERY_PER_PAGE = getGalleryPerPage();
 
   let galleryAll = [];
   let galleryPage = 0;
