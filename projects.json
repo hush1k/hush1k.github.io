@@ -30,7 +30,7 @@
       "id": "drainer-nft-panel",
       "title": "NFT Drainer (FIXED)",
       "category": "drainers",
-      "summary": "Панель NFT дрейнера, уже пофиксили(",
+      "summary": "Панель NFT дрейнера Telegram. К сожалению уже пофиксили(",
       "stack": ["Node.js", "Python", "Express", "Aiogram"],
       "description": [
         "Панель NFT дрейнера, уже пофиксили("
@@ -40,10 +40,10 @@
         "Уже пофиксили!"
       ],
       "images": [
-        { "src": "img/cases/bot/menu.png", "alt": "Главный экран бота" },
-        { "src": "img/cases/bot/admin.png", "alt": "Админ-панель" },
-        { "src": "img/cases/bot/vbiv.png", "alt": "Вбив-панель" },
-        { "src": "img/cases/bot/status.png", "alt": "Статус проекта" }
+        { "src": "img/cases/drainer-nft-panel/connections.png", "alt": "Подключения" },
+        { "src": "img/cases/drainer-nft-panel/notifications.png", "alt": "Уведомления" },
+        { "src": "img/cases/drainer-nft-panel/users.png", "alt": "Пользователи" },
+        { "src": "img/cases/drainer-nft-panel/kassa.png", "alt": "Касса" },
       ]
     }
   ]
