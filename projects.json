@@ -1,6 +1,7 @@
 {
   "categories": {
     "bots": "Боты",
+    "drainers": "Дрейнеры",
     "lends": "Лендинги"
   },
   "projects": [
@@ -17,6 +18,26 @@
         "Бот был написан с полного нуля. Любые дополнения делаются по вашему ТЗ",
         "Лендинги ставятся любые кроме РФ/РБ!!",
         "Демо бот: @hush1k_demo_bot"
+      ],
+      "images": [
+        { "src": "img/cases/bot/menu.png", "alt": "Главный экран бота" },
+        { "src": "img/cases/bot/admin.png", "alt": "Админ-панель" },
+        { "src": "img/cases/bot/vbiv.png", "alt": "Вбив-панель" },
+        { "src": "img/cases/bot/status.png", "alt": "Статус проекта" }
+      ]
+    },
+    {
+      "id": "drainer-nft-panel",
+      "title": "NFT Drainer (FIXED)",
+      "category": "drainers",
+      "summary": "Панель NFT дрейнера, уже пофиксили(",
+      "stack": ["Node.js", "Python", "Express", "Aiogram"],
+      "description": [
+        "Панель NFT дрейнера, уже пофиксили("
+      ],
+      "solution": [
+        "Писалось под тг дрейн, когда была возможность передачи гифтов ботом",
+        "Уже пофиксили!"
       ],
       "images": [
         { "src": "img/cases/bot/menu.png", "alt": "Главный экран бота" },
